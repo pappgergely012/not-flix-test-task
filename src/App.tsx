@@ -85,7 +85,11 @@ function App() {
     <div className="App">
       <header className="App-header">
         <div className="logo-container">
-          <img src="/video-icon.svg" alt="Not-Flix" className="logo-icon" />
+          <img
+            src="/icons/video-icon.svg"
+            alt="Not-Flix"
+            className="logo-icon"
+          />
           <h1>Not-Flix</h1>
         </div>
       </header>
