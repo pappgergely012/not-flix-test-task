@@ -1,0 +1,81 @@
+2025-09-30 15:43:45 +0200 | pappgergely012 | updating icon pack
+
+
+ public/favicon.ico                        | Bin 3870 -> 0 bytes
+ public/icons/apple-touch-icon.png         | Bin 0 -> 2600 bytes
+ public/icons/favicon-96x96.png            | Bin 0 -> 1247 bytes
+ public/icons/favicon.ico                  | Bin 0 -> 15086 bytes
+ public/icons/favicon.svg                  |   6 ++++++
+ public/icons/site.webmanifest             |  21 +++++++++++++++++++++
+ public/{ => icons}/video-icon.svg         |   0
+ public/icons/web-app-manifest-192x192.png | Bin 0 -> 2759 bytes
+ public/icons/web-app-manifest-512x512.png | Bin 0 -> 10892 bytes
+ public/index.html                         |  23 ++++++++++++++++++-----
+ public/logo192.png                        | Bin 5347 -> 0 bytes
+ public/logo512.png                        | Bin 9664 -> 0 bytes
+ public/manifest.json                      |  14 +++++++-------
+ src/App.tsx                               |   6 +++++-
+ 14 files changed, 57 insertions(+), 13 deletions(-)
+2025-09-30 15:39:55 +0200 | pappgergely012 | icon
+
+
+ public/index.html     | 34 ++++++----------------------------
+ public/video-icon.svg |  4 ++++
+ src/App.css           | 17 +++++++++++++++++
+ src/App.tsx           |  5 ++++-
+ 4 files changed, 31 insertions(+), 29 deletions(-)
+2025-09-30 15:36:27 +0200 | pappgergely012 | fixing http for some reason it was http in the source json can end up mixed content warning error, removing poster
+
+
+ public/videos.json             | 56 +++++++++++++++++++++---------------------
+ src/components/VideoModal.tsx  |  5 ----
+ src/components/VideoPlayer.tsx |  4 +--
+ 3 files changed, 29 insertions(+), 36 deletions(-)
+2025-09-30 15:30:25 +0200 | pappgergely012 | video player init
+
+
+ README.md                           |  64 +++--
+ public/assets/backward.svg          |   5 +
+ public/assets/forward.svg           |   5 +
+ public/assets/next.svg              |   7 +
+ public/assets/pause.svg             |   5 +
+ public/assets/play.svg              |   5 +
+ public/assets/previous.svg          |   7 +
+ public/assets/video-placeholder.svg |   4 +
+ public/videos.json                  | 126 +++++++++
+ src/App.css                         | 500 ++++++++++++++++++++++++++++++++++--
+ src/App.test.tsx                    |   8 +-
+ src/App.tsx                         | 119 +++++++--
+ src/components/AddMediaForm.tsx     |  37 +++
+ src/components/PlayerControls.tsx   |  60 +++++
+ src/components/VideoCard.tsx        |  79 ++++++
+ src/components/VideoGrid.tsx        |  34 +++
+ src/components/VideoModal.tsx       | 255 ++++++++++++++++++
+ src/components/VideoPlayer.tsx      |  84 ++++++
+ src/index.css                       |  18 +-
+ src/types.ts                        |  16 ++
+ 20 files changed, 1370 insertions(+), 68 deletions(-)
+2025-09-30 14:53:30 +0200 | pappgergely012 | Initialize project using Create React App
+
+
+ .gitignore             |    23 +
+ README.md              |    46 +
+ package-lock.json      | 17589 +++++++++++++++++++++++++++++++++++++++++++++++
+ package.json           |    44 +
+ public/favicon.ico     |   Bin 0 -> 3870 bytes
+ public/index.html      |    43 +
+ public/logo192.png     |   Bin 0 -> 5347 bytes
+ public/logo512.png     |   Bin 0 -> 9664 bytes
+ public/manifest.json   |    25 +
+ public/robots.txt      |     3 +
+ src/App.css            |    38 +
+ src/App.test.tsx       |     9 +
+ src/App.tsx            |    26 +
+ src/index.css          |    13 +
+ src/index.tsx          |    19 +
+ src/logo.svg           |     1 +
+ src/react-app-env.d.ts |     1 +
+ src/reportWebVitals.ts |    15 +
+ src/setupTests.ts      |     5 +
+ tsconfig.json          |    26 +
+ 20 files changed, 17926 insertions(+)
