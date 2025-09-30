@@ -84,7 +84,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Not-Flix</h1>
+        <div className="logo-container">
+          <img src="/video-icon.svg" alt="Not-Flix" className="logo-icon" />
+          <h1>Not-Flix</h1>
+        </div>
       </header>
 
       <div className="main-content">

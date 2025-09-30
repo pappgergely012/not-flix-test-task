@@ -21,6 +21,18 @@
   backdrop-filter: blur(10px);
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 30px;
+  height: 30px;
+  filter: drop-shadow(0 2px 4px rgba(229, 9, 20, 0.3));
+}
+
 .App-header h1 {
   margin: 0;
   font-size: 32px;
@@ -430,6 +442,11 @@
 @media (max-width: 768px) {
   .App-header {
     padding: 15px 20px;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
   }
 
   .App-header h1 {
