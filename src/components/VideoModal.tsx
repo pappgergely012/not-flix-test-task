@@ -208,11 +208,6 @@ const VideoModal: React.FC<VideoModalProps> = ({
           <video
             ref={videoRef}
             src={video.sources[0]}
-            poster={
-              video.thumb
-                ? `/images/${video.thumb.split("/").pop()}`
-                : undefined
-            }
             onEnded={() => onNext()}
             autoPlay
           />

@@ -57,9 +57,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         <video
           ref={videoRef}
           src={video.sources[0]}
-          poster={
-            video.thumb ? `/images/${video.thumb.split("/").pop()}` : undefined
-          }
+          poster={video.thumb}
           onEnded={() => onNext()}
         />
       </div>
