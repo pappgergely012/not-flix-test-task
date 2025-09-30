@@ -307,6 +307,14 @@
   display: block;
 }
 
+.modal-video-container video::-webkit-media-controls {
+  display: none !important;
+}
+
+.modal-video-container video::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+
 /* Controls Overlay */
 .controls-overlay {
   position: absolute;
@@ -430,6 +438,10 @@
 .play-pause-btn img {
   width: 32px;
   height: 32px;
+}
+
+.fullscreen-btn {
+  margin-left: auto;
 }
 
 /* Responsive Design */

@@ -7,6 +7,8 @@ interface PlayerControlsProps {
   onNext: () => void;
   onFastBackward: () => void;
   onFastForward: () => void;
+  onFullscreen: () => void;
+  isFullscreen: boolean;
 }
 
 const PlayerControls: React.FC<PlayerControlsProps> = ({
@@ -16,6 +18,8 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
   onNext,
   onFastBackward,
   onFastForward,
+  onFullscreen,
+  isFullscreen,
 }) => {
   return (
     <div className="player-controls">
@@ -52,6 +56,21 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
 
       <button onClick={onNext} className="control-btn" title="Next">
         <img src="/assets/next.svg" alt="Next" />
+      </button>
+
+      <button
+        onClick={onFullscreen}
+        className="control-btn fullscreen-btn"
+        title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+      >
+        <img
+          src={
+            isFullscreen
+              ? "/assets/exit-fullscreen.svg"
+              : "/assets/fullscreen.svg"
+          }
+          alt={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+        />
       </button>
     </div>
   );

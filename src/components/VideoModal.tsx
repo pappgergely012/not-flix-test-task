@@ -26,6 +26,7 @@ const VideoModal: React.FC<VideoModalProps> = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -106,6 +107,33 @@ const VideoModal: React.FC<VideoModalProps> = ({
     };
   }, [video, isDragging]);
 
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+    document.addEventListener("mozfullscreenchange", handleFullscreenChange);
+    document.addEventListener("msfullscreenchange", handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener(
+        "webkitfullscreenchange",
+        handleFullscreenChange
+      );
+      document.removeEventListener(
+        "mozfullscreenchange",
+        handleFullscreenChange
+      );
+      document.removeEventListener(
+        "msfullscreenchange",
+        handleFullscreenChange
+      );
+    };
+  }, []);
+
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === modalRef.current) {
       onClose();
@@ -180,6 +208,51 @@ const VideoModal: React.FC<VideoModalProps> = ({
     };
   }, [isDragging, duration]);
 
+  const handleFullscreen = () => {
+    const videoElement = videoRef.current;
+    if (!videoElement) return;
+
+    // iOS Safari használja a webkitEnterFullscreen-t a video elemen
+    if ((videoElement as any).webkitEnterFullscreen) {
+      try {
+        if ((videoElement as any).webkitDisplayingFullscreen) {
+          (videoElement as any).webkitExitFullscreen();
+        } else {
+          (videoElement as any).webkitEnterFullscreen();
+        }
+        return;
+      } catch (err) {
+        console.log("iOS fullscreen error:", err);
+      }
+    }
+
+    // Desktop és Android böngészők
+    const modalElement = modalRef.current;
+    if (!modalElement) return;
+
+    if (!document.fullscreenElement) {
+      if (modalElement.requestFullscreen) {
+        modalElement.requestFullscreen();
+      } else if ((modalElement as any).webkitRequestFullscreen) {
+        (modalElement as any).webkitRequestFullscreen();
+      } else if ((modalElement as any).mozRequestFullScreen) {
+        (modalElement as any).mozRequestFullScreen();
+      } else if ((modalElement as any).msRequestFullscreen) {
+        (modalElement as any).msRequestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if ((document as any).webkitExitFullscreen) {
+        (document as any).webkitExitFullscreen();
+      } else if ((document as any).mozCancelFullScreen) {
+        (document as any).mozCancelFullScreen();
+      } else if ((document as any).msExitFullscreen) {
+        (document as any).msExitFullscreen();
+      }
+    }
+  };
+
   const formatTime = (seconds: number) => {
     if (isNaN(seconds)) return "0:00";
     const mins = Math.floor(seconds / 60);
@@ -210,6 +283,10 @@ const VideoModal: React.FC<VideoModalProps> = ({
             src={video.sources[0]}
             onEnded={() => onNext()}
             autoPlay
+            playsInline
+            disablePictureInPicture
+            controlsList="nodownload noremoteplayback"
+            x-webkit-airplay="allow"
           />
         </div>
 
@@ -239,6 +316,8 @@ const VideoModal: React.FC<VideoModalProps> = ({
               onNext={onNext}
               onFastBackward={handleFastBackward}
               onFastForward={handleFastForward}
+              onFullscreen={handleFullscreen}
+              isFullscreen={isFullscreen}
             />
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Video } from "../types";
 import PlayerControls from "./PlayerControls";
 
@@ -18,6 +18,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   onNext,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -29,6 +31,33 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       videoElement.pause();
     }
   }, [isPlaying]);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+    document.addEventListener("mozfullscreenchange", handleFullscreenChange);
+    document.addEventListener("msfullscreenchange", handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener(
+        "webkitfullscreenchange",
+        handleFullscreenChange
+      );
+      document.removeEventListener(
+        "mozfullscreenchange",
+        handleFullscreenChange
+      );
+      document.removeEventListener(
+        "msfullscreenchange",
+        handleFullscreenChange
+      );
+    };
+  }, []);
 
   const handlePlayPause = () => {
     onPlayPause(!isPlaying);
@@ -51,14 +80,63 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     }
   };
 
+  const handleFullscreen = () => {
+    const videoElement = videoRef.current;
+    if (!videoElement) return;
+
+    // iOS Safari használja a webkitEnterFullscreen-t a video elemen
+    if ((videoElement as any).webkitEnterFullscreen) {
+      try {
+        if ((videoElement as any).webkitDisplayingFullscreen) {
+          (videoElement as any).webkitExitFullscreen();
+        } else {
+          (videoElement as any).webkitEnterFullscreen();
+        }
+        return;
+      } catch (err) {
+        console.log("iOS fullscreen error:", err);
+      }
+    }
+
+    // Desktop és Android böngészők
+    const container = containerRef.current;
+    if (!container) return;
+
+    if (!document.fullscreenElement) {
+      if (container.requestFullscreen) {
+        container.requestFullscreen();
+      } else if ((container as any).webkitRequestFullscreen) {
+        (container as any).webkitRequestFullscreen();
+      } else if ((container as any).mozRequestFullScreen) {
+        (container as any).mozRequestFullScreen();
+      } else if ((container as any).msRequestFullscreen) {
+        (container as any).msRequestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if ((document as any).webkitExitFullscreen) {
+        (document as any).webkitExitFullscreen();
+      } else if ((document as any).mozCancelFullScreen) {
+        (document as any).mozCancelFullScreen();
+      } else if ((document as any).msExitFullscreen) {
+        (document as any).msExitFullscreen();
+      }
+    }
+  };
+
   return (
-    <div className="video-player">
+    <div className="video-player" ref={containerRef}>
       <div className="video-container">
         <video
           ref={videoRef}
           src={video.sources[0]}
           poster={video.thumb}
           onEnded={() => onNext()}
+          playsInline
+          disablePictureInPicture
+          controlsList="nodownload noremoteplayback"
+          x-webkit-airplay="allow"
         />
       </div>
 
@@ -74,6 +152,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         onNext={onNext}
         onFastBackward={handleFastBackward}
         onFastForward={handleFastForward}
+        onFullscreen={handleFullscreen}
+        isFullscreen={isFullscreen}
       />
     </div>
   );
